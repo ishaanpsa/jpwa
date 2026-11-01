@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jamakkol Prasanam Calculator</title>
+  <style>
+    :root{color-scheme:light;--ink:#202522;--muted:#66716a;--paper:#c0c0c0;--card:#fffefa;--line:#d9ddd4;--accent:#17365d;--soft:#e6e8eb}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Andale Mono","Courier New",monospace}
+    main{max-width:1050px;margin:auto;padding:36px 20px 60px}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;margin:5px 0 12px;letter-spacing:-.04em}h2{font-size:1.15rem;margin:0 0 14px}.page-heading{margin-bottom:16px;padding:14px 18px 10px;text-align:center;background:#c0c0c0;border:3px solid;border-color:#fff #666 #666 #fff;box-shadow:1px 1px 0 #000}.page-title{text-align:center;margin:0 0 8px}.verse-subheader{text-align:center;margin:0 0 4px;color:var(--accent);font-family:"Noto Serif Devanagari","Nirmala UI",serif;font-size:1.12rem}.verse-subheader span{font-family:"Andale Mono","Courier New",monospace;font-size:.84rem;white-space:nowrap}.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.75rem}.intro{color:var(--muted);max-width:700px;margin:0 0 26px}
+    .layout{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 28px #2330220b}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}label{font-size:.83rem;font-weight:650}input,select{font:inherit;padding:10px 11px;border:1px solid #cbd2c8;border-radius:9px;background:white;color:var(--ink);min-width:0}input:focus,select:focus{outline:3px solid #17365d2b;border-color:var(--accent)}button{margin-top:16px;width:100%;border:0;border-radius:10px;padding:12px;background:var(--accent);color:white;font:inherit;font-weight:700;cursor:pointer}button:hover{background:#102744}.hint{font-size:.78rem;color:var(--muted);margin:12px 0 0}
+    .results{display:grid;gap:16px}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch}.metric{padding:12px;border-radius:11px;background:var(--soft);min-width:0}.metric span{display:block;color:var(--muted);font-size:.76rem}.metric strong{font-size:1.08rem;overflow-wrap:anywhere}.tabloid-wrap{overflow-x:auto}.tabloid{width:100%;min-width:360px;border-collapse:separate;border-spacing:0}.tabloid th,.tabloid td{border-bottom:1px solid var(--line);padding:0;text-align:left;vertical-align:middle}.tabloid th{padding:10px 12px;color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}.tabloid td button{display:block;width:100%;height:100%;min-height:58px;margin:0;padding:11px 12px;text-align:left;border:0;border-radius:0;background:transparent;color:var(--ink);font:inherit;cursor:pointer}.tabloid td button:hover,.tabloid td button:focus-visible{background:var(--soft);outline:2px solid var(--accent);outline-offset:-2px}.tabloid .bhava{font-weight:700;white-space:nowrap}.tabloid .planet-chip{display:inline-block;margin:2px 3px 2px 0;padding:2px 7px;border-radius:20px;background:#e2e4e7;font-size:.78rem}.tabloid details{min-height:58px}.tabloid details summary{height:100%;min-height:58px;padding:17px 12px;cursor:pointer;color:var(--accent);font-weight:650}.tabloid details[open] summary{padding-bottom:5px}.tabloid .nakshatras{padding:0 12px 14px;color:var(--muted);font-size:.86rem}.error{color:#9a2b26;background:#fff0ed;padding:10px;border-radius:9px;display:none}
+    button.secondary{margin:0 0 2px;padding:10px;font-size:.9rem}
+    button.secondary{margin:0 0 2px;padding:10px;font-size:.9rem}
+    .query-meta{position:sticky;top:0;z-index:5;overflow:hidden;background:#c0c0c0;border:2px solid;border-color:#fff #777 #777 #fff;box-shadow:1px 1px 0 #000;margin:0 0 22px;font-size:.9rem}.ticker-track{display:flex;width:max-content;animation:ticker-scroll 28s linear infinite}.ticker-message{display:block;flex:none;white-space:nowrap;padding:8px 44px 8px 12px;font-weight:700;color:#17365d}.query-meta:hover .ticker-track{animation-play-state:paused}@keyframes ticker-scroll{to{transform:translateX(-50%)}}
+    #form{margin-top:16px}details.inputs-menu{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}details.inputs-menu summary{list-style:none;cursor:pointer;padding:13px 15px;font-weight:700;background:#f6f7f2;display:flex;justify-content:space-between;align-items:center}details.inputs-menu summary::-webkit-details-marker{display:none}details.inputs-menu summary::after{content:'＋';color:var(--accent);font-size:1.2rem}details.inputs-menu[open] summary::after{content:'−'}.menu-content{padding:14px}
+    body:not(.ready) main{display:none}.welcome{position:fixed;inset:0;overflow-y:auto;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 30%,#e6e8eb,var(--paper) 70%)}body.ready .welcome{display:none}.welcome-card{width:min(100%,540px);text-align:center;padding:36px 25px}.welcome-mark{width:48px;height:48px;margin:0 auto 22px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--accent);font-size:1.35rem}.welcome h1{font-size:clamp(2rem,9vw,3.2rem)}.welcome-image{display:block;width:auto;max-width:min(72vw,320px);height:42vh;max-height:360px;object-fit:contain;margin:14px auto 18px;border:5px ridge #d0d0d0;background:#c0c0c0;box-shadow:2px 2px #555}.welcome button{max-width:230px}.welcome-note{max-width:470px;margin:20px auto 0;color:#202522;background:#c0c0c0;border:2px solid;border-color:#fff #666 #666 #fff;box-shadow:1px 1px #000;padding:12px;font-size:.82rem;line-height:1.45;text-align:center}.welcome-status{min-height:24px;font-size:.85rem;color:var(--muted);margin-top:14px}
+    @media(max-width:760px){main{padding:22px 14px 40px}.layout{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:16px}.welcome-card{padding:24px 18px}.welcome-image{height:30vh;max-height:240px}}
+    @media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+  </style>
+</head>
+<body>
+<section class="welcome" id="welcome" aria-labelledby="welcome-title">
+  <form class="welcome-card" id="welcomeform">
+    <h1 id="welcome-title">Jamakkol Prasanam</h1>
+    <img class="welcome-image" src="assets/landing-vishnu.jpg" alt="Vishnu reclining among the cosmic worlds">
+    <button type="submit" id="continue">Enter</button>
+    <p class="welcome-note">This webpage is merely a tool to assist with formal astrological methods and should be used for reference only. The information itself will not come to fruition without the blessings of the Lord or the Guru. Before pressing Enter, focus on your question and continue only when you are ready. Although accuracy is promised, for the best results, use the calculator no more than once per hour and think carefully about your question before proceeding.</p>
+    <div class="welcome-status" id="welcomestatus" role="status"></div>
+  </form>
+</section>
+<main>
+  <header class="page-heading">
+    <h1 class="page-title">Jamakkol Prasanam</h1>
+    <p class="verse-subheader">कालोऽस्मि लोकक्षयकृत् प्रवृद्धः<br>लोकान्समाहर्तुमिह प्रवृत्तः <span>— Bhagavad Gita 11.32</span></p>
+  </header>
+  <div class="query-meta" id="querymeta" aria-label="Query time and location"><div class="ticker-track"><span class="ticker-message" id="queryticker">Query time: Waiting… · Location: Waiting for permission…</span><span class="ticker-message" id="queryticker-copy" aria-hidden="true">Query time: Waiting… · Location: Waiting for permission…</span></div></div>
+  <div class="layout">
+    <section class="results" aria-live="polite">
+      <div id="error" class="error"></div>
+      <section class="card"><h2>Calculated factors</h2><div id="summary" class="summary"></div></section>
+      <section class="card"><h2>Bhava details</h2><div class="tabloid-wrap"><table class="tabloid" id="tabloid"></table></div></section>
+    </section>
+  </div>
+  <form id="form" class="card">
+    <h2>Query and Panchang inputs</h2>
+    <p id="locationstatus" class="hint" role="status"></p>
+    <details class="inputs-menu">
+      <summary>Calculation inputs</summary>
+      <div class="menu-content"><div class="fields">
+        <div class="field"><label for="date">Query date</label><input id="date" type="date" required></div>
+        <div class="field"><label for="time">Local query time</label><input id="time" type="time" required></div>
+        <div class="field"><label for="sunrise">Local sunrise</label><input id="sunrise" type="time" value="06:00" required></div>
+        <div class="field"><label for="sunset">Local sunset</label><input id="sunset" type="time" value="18:00" required></div>
+        <div class="field full"><label for="sunlong">Transit Sun longitude (0°–360°)</label><input id="sunlong" type="number" min="0" max="360" step="0.01" value="0" required></div>
+        <div class="field full"><label for="border">Aarudam at an exact 5-minute boundary</label><select id="border"><option value="next">Use the new interval (default)</option><option value="previous">Use the previous interval</option></select></div>
+      </div>
+      <button type="submit">Calculate chart</button></div>
+    </details>
+  </form>
+</main>
+<script>
+const signs=['Mesha (Aries)','Rishaba (Taurus)','Mithuna (Gemini)','Kataka (Cancer)','Simha (Leo)','Kanya (Virgo)','Thula (Libra)','Virschika (Scorpio)','Dhanus (Sagittarius)','Makara (Capricorn)','Kumbha (Aquarius)','Meena (Pisces)'];
+const signStars=[['Ashwini','Bharani','Krittika (part)'],['Krittika (part)','Rohini','Mrigashira (part)'],['Mrigashira (part)','Ardra','Punarvasu (part)'],['Punarvasu (part)','Pushya','Ashlesha'],['Magha','Purva Phalguni','Uttara Phalguni (part)'],['Uttara Phalguni (part)','Hasta','Chitra (part)'],['Chitra (part)','Swati','Vishakha (part)'],['Vishakha (part)','Anuradha','Jyeshtha'],['Mula','Purva Ashadha','Uttara Ashadha (part)'],['Uttara Ashadha (part)','Shravana','Dhanishta (part)'],['Dhanishta (part)','Shatabhisha','Purva Bhadrapada (part)'],['Purva Bhadrapada (part)','Uttara Bhadrapada','Revati']];
+const planets=['Sun','Mars','Jupiter','Mercury','Venus','Moon','Saturn','Snake (Rahu/Ketu)'];
+const slots=[11,9,8,6,5,3,2,0]; // Meena, Makara, Dhanus, Thula, Kanya, Kataka, Mithuna, Mesha
+const weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const lords=['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
+const el=id=>document.getElementById(id), mod=(n,m)=>(n%m+m)%m;
+function minutes(s){const [h,m]=s.split(':').map(Number);return h*60+m}
+function clock(m){m=mod(Math.round(m),1440);return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`}
+function updateTicker(time,location){const line=`Query time: ${time} · Location: ${location}`;el('queryticker').textContent=line;el('queryticker-copy').textContent=line}
+function sunLongitude(date,time,offsetSeconds){
+ const [y,mo,d]=date.split('-').map(Number),[hh,mm]=time.split(':').map(Number);
+ const utc=new Date(Date.UTC(y,mo-1,d,hh,mm)-offsetSeconds*1000), jd=utc.getTime()/86400000+2440587.5, t=(jd-2451545)/36525;
+ const l0=mod(280.46646+36000.76983*t+0.0003032*t*t,360), m=mod(357.52911+35999.05029*t-0.0001537*t*t,360)*Math.PI/180;
+ const c=(1.914602-0.004817*t-0.000014*t*t)*Math.sin(m)+(0.019993-0.000101*t)*Math.sin(2*m)+0.000289*Math.sin(3*m);
+ const apparent=l0+c-0.00569-0.00478*Math.sin((125.04-1934.136*t)*Math.PI/180);
+ const lahiri=23.85675+(jd-2451545)*0.0000383;
+ return mod(apparent-lahiri,360);
+}
+async function startQuery(e){
+ e.preventDefault();const button=el('continue'),status=el('welcomestatus'),now=new Date();button.disabled=true;
+ const date=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+ const time=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+ const displayTime=now.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});let locationText='Waiting for permission…';
+ el('date').value=date;el('time').value=time;updateTicker(displayTime,locationText);
+ status.textContent='Requesting location permission…';
+ try{
+  if(!navigator.geolocation)throw new Error('Location access is not available in this browser.');
+  const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,timeout:15000,maximumAge:300000}));
+  const lat=pos.coords.latitude,lon=pos.coords.longitude,tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'local time';
+  locationText=`${Math.abs(lat).toFixed(3)}° ${lat>=0?'N':'S'}, ${Math.abs(lon).toFixed(3)}° ${lon>=0?'E':'W'} · ${tz}`;updateTicker(displayTime,locationText);
+  status.textContent='Getting local sunrise and sunset…';
+  const older=Date.parse(date+'T00:00:00Z')<Date.now()-5*86400000;
+  const base=older?'https://archive-api.open-meteo.com/v1/archive':'https://api.open-meteo.com/v1/forecast';
+  const url=new URL(base);url.search=new URLSearchParams({latitude:lat,longitude:lon,daily:'sunrise,sunset',start_date:date,end_date:date,timezone:'auto'});
+  const response=await fetch(url);if(!response.ok)throw new Error(`Solar data lookup failed (${response.status}).`);
+  const data=await response.json();if(!data.daily?.sunrise?.[0]||!data.daily?.sunset?.[0])throw new Error('No sunrise/sunset data is available for that date and location.');
+  locationText=`${Math.abs(lat).toFixed(3)}° ${lat>=0?'N':'S'}, ${Math.abs(lon).toFixed(3)}° ${lon>=0?'E':'W'} · ${data.timezone||tz}`;updateTicker(displayTime,locationText);
+  el('sunrise').value=data.daily.sunrise[0].slice(11,16);el('sunset').value=data.daily.sunset[0].slice(11,16);
+  el('sunlong').value=sunLongitude(date,time,data.utc_offset_seconds||0).toFixed(2);
+  el('locationstatus').textContent='';
+  document.body.classList.add('ready');el('form').requestSubmit();
+ }catch(err){
+  if(locationText==='Waiting for permission…'){locationText='Location unavailable';updateTicker(displayTime,locationText)}
+  el('locationstatus').textContent=`${err.message||'Location permission was not granted.'} Open Calculation inputs to enter Panchang values manually.`;
+  document.body.classList.add('ready');
+ }finally{button.disabled=false}
+}
+function compute(e){e.preventDefault();el('error').style.display='none';
+ const date=new Date(el('date').value+'T12:00:00'), q=minutes(el('time').value), rise=minutes(el('sunrise').value), set=minutes(el('sunset').value), sun=Number(el('sunlong').value);
+ if(!Number.isFinite(+date)||![q,rise,set,sun].every(Number.isFinite)||sun<0||sun>360){showError('Enter a valid date, time, and Sun longitude.');return}
+ if(rise===set){showError('Sunrise and sunset must be different.');return}
+ const dayMinutes=mod(set-rise,1440), nightMinutes=1440-dayMinutes;
+ const daytime=mod(q-rise,1440)<dayMinutes;
+ const elapsed=daytime?mod(q-rise,1440):mod(q-rise,1440)-dayMinutes;
+ const sunSign=Math.floor(mod(sun,360)/30), sunDegree=mod(sun,30);
+ // Book method 1 for daylight; book method 2's equal night divisions, starting from the Sun's sign, for night.
+ let udhaya;
+ if(daytime){udhaya=mod(Math.floor((sun+elapsed/2)/30),12)}
+ else {const per=nightMinutes/12;udhaya=mod(sunSign+Math.floor(elapsed/per),12)}
+ let minute=q%60, exact=minute%5===0;
+ let aruda=Math.floor(minute/5);
+ if(exact&&el('border').value==='previous')aruda=mod(aruda-1,12);
+ aruda=mod(aruda,12);
+ const sunRasi=sunSign;
+ const veedhiTarget=([1,2,3,4].includes(sunSign)?0:[11,0,5,6].includes(sunSign)?1:2);
+ // Book mapping: Sun in Rishaba/Mithuna/Kataka/Simha => Mesha Veedhi;
+ // Meena/Mesha/Kanya/Thula => Rishaba; Virschika/Dhanus/Makara/Kumbha => Mithuna.
+ const target=veedhiTarget===0?0:veedhiTarget===1?1:2;
+ const kavippu=mod(udhaya+mod(target-aruda,12),12);
+ const idx=Math.floor(mod(q-360,1440)/90)%8, leader=lords[date.getDay()], leaderIndex=planets.indexOf(leader);
+ const jamRasi=slots[idx];
+ const outside=Array(12).fill('');
+ for(let i=0;i<8;i++)outside[slots[(idx+i)%8]]=planets[(leaderIndex+i)%8];
+ const inside=Array(12).fill('');
+ inside[sunSign]=`Sun ${sunDegree.toFixed(2)}°`;
+ add(inside,aruda,'Aarudam');add(inside,udhaya,'Udhaya');add(inside,kavippu,'Kavippu');
+ const start=360+idx*90+(q>=1080?720:0), jamLabel=`${clock(start)}–${clock(start+90)}`;
+ el('summary').innerHTML=`<div class="metric"><span>Aarudam</span><strong>${signs[aruda]}</strong></div><div class="metric"><span>Udhaya</span><strong>${signs[udhaya]}</strong></div><div class="metric"><span>Kavippu</span><strong>${signs[kavippu]}</strong></div><div class="metric"><span>Veedhi</span><strong>${['Mesha','Rishaba','Mithuna'][veedhiTarget]} Veedhi</strong></div><div class="metric"><span>Jamakkol slot</span><strong>${jamLabel} · ${signs[jamRasi].split(' ')[0]}</strong></div><div class="metric"><span>Day lord</span><strong>${leader}</strong></div>`;
+ const end=mod(sun+elapsed/2,360);
+ const tableRows=Array.from({length:12},(_,i)=>{
+  const house=i+1,sign=mod(udhaya+i,12),planetsHere=[];
+  if(outside[sign])planetsHere.push(`Jamakkol ${outside[sign]}`);
+  if(sunSign===sign)planetsHere.push('Transit Sun');
+  const planetText=planetsHere.length?planetsHere.join(', '):'—';
+  return {house,sign,stars:signStars[sign],planets:planetText};
+ });
+ el('tabloid').innerHTML='<thead><tr><th>Bhava</th><th>Planet(s)</th><th>Sign / Nakshatra</th></tr></thead><tbody>'+tableRows.map(r=>`<tr><td><button class="bhava" data-house="${r.house}">Bhava ${r.house}</button></td><td><button data-house="${r.house}">${r.planets.split(', ').map(p=>p==='—'?p:`<span class="planet-chip">${p}</span>`).join('')}</button></td><td><details><summary>${signs[r.sign]}</summary><div class="nakshatras">${r.stars.join(', ')}</div></details></td></tr>`).join('')+'</tbody>';
+}
+function add(a,i,v){a[i]=a[i]?a[i]+' · '+v:v}
+function ordinal(n){return n===1?'st':n===2?'nd':n===3?'rd':'th'}
+function showError(s){el('error').textContent=s;el('error').style.display='block'}
+el('form').addEventListener('submit',compute);el('welcomeform').addEventListener('submit',startQuery);
+</script>
+</body>
+</html>
+
+# Jamakkol Prasanam — Alternate Site
+
+This is a standalone static website. It requires no build step, package manager, or server code.
+
+## Publish with GitHub Pages
+
+1. Create a GitHub repository for this site.
+2. Upload the contents of this folder to the repository root: `index.html`, `assets/`, and `.nojekyll`.
+3. In the repository, open **Settings → Pages** and select **Deploy from a branch**.
+4. Select the `main` branch and `/ (root)`, then save.
+
+The site uses browser geolocation and makes HTTPS requests to Open-Meteo for sunrise and sunset data. GitHub Pages serves it over HTTPS, which supports browser location permission.
